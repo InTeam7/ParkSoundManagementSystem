@@ -8,8 +8,9 @@ namespace ParkSoundManagementSystem.Core.Repositories
 {
     public interface ISystemProcessRepository
     {
-        Task<int> Write(string processName, int pId);
-        Task<Tuple<string, int>> Read();
+        Task<int> Write(DesiredProcess process);
+        Task<DesiredProcess> Read();
+        Task<bool> IsContainsString();
         bool IsExist { get; }
     }
 }

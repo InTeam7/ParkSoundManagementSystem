@@ -8,8 +8,9 @@ namespace ParkSoundManagementSystem.Core.Services
 {
     public interface ISystemProcessService
     {
-        int GetProcessId();
-        string GetProcessName();
-        void SetProcess(string processName);
+        Task<int> GetProcessId();
+        Task<string> GetProcessName();
+        Task<int> SetProcess(string processName);
+        Task<string> SetProcessAutomatically();
     }
 }
