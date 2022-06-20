@@ -12,14 +12,14 @@ namespace ParkSoundManagementSystem.DataAccess
 {
     public class SystemProccessRepository : ISystemProcessRepository
     {
-        private readonly string _filePath;
+        private readonly RepositoryArgs _args;
 
-        public SystemProccessRepository(string filePath)
+        public SystemProccessRepository(RepositoryArgs args)
         {
-            _filePath = filePath;
+            _args = args;
         }
 
-        public bool IsExist => File.Exists(_filePath);
+        public bool IsExist => File.Exists(_args.FilePath);
 
         public async Task<bool> IsContainsString()
         {
@@ -34,9 +34,9 @@ namespace ParkSoundManagementSystem.DataAccess
         public async Task<DesiredProcess> Read()
         {
             var text = await OpenAndRead();
-            var _context = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            var processName = _context[0];
-            if (int.TryParse(_context[1], out int pId))
+            var _keyWords = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var processName = _keyWords[0];
+            if (int.TryParse(_keyWords[1], out int pId))
             {
                 return new DesiredProcess(processName, pId);
             }
@@ -47,37 +47,24 @@ namespace ParkSoundManagementSystem.DataAccess
 
         public async Task<int> Write(DesiredProcess process)
         {
-            if (IsExist)
-            {
-                using (StreamWriter writer = new StreamWriter(_filePath, false))
-                {
-                    await writer.WriteLineAsync("");
-                }
-            }
-
             string text = process.Name + " " + process.PId.ToString();
-            using (var stream = new FileStream(_filePath, FileMode.OpenOrCreate))
+            using (StreamWriter writer = new StreamWriter(_args.FilePath, false))
             {
-                var buffer = Encoding.Default.GetBytes(text);
-                await stream.WriteAsync(buffer, 0, buffer.Length);
-
+                await writer.WriteLineAsync("");
             }
+
             return process.PId;
         }
 
-        
+
         private async Task<string> OpenAndRead()
         {
-            string text = "";
             if (IsExist)
             {
-                using (FileStream stream = File.OpenRead(_filePath))
+                using (StreamReader sr = new StreamReader(_args.FilePath))
                 {
-                    var buffer = new byte[stream.Length];
-                    await stream.ReadAsync(buffer, 0, buffer.Length);
-                    text = Encoding.UTF8.GetString(buffer);
+                    string text = await sr.ReadToEndAsync();
                 }
-                return text;
             }
             throw new FileExistException("File does not exsist");
         }

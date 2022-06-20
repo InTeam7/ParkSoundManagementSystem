@@ -1,4 +1,5 @@
 ﻿using ParkSoundManagementSystem.Core;
+using ParkSoundManagementSystem.Core.Exceptions;
 using ParkSoundManagementSystem.Core.Repositories;
 using ParkSoundManagementSystem.Core.Services;
 using System;
@@ -22,21 +23,35 @@ namespace ParkSoundManagementSystem.Services
 
         public async Task<int> GetProcessId()
         {
-            var process = await _systemProcessRepository.Read();
-            return process.PId;
-
+            try
+            {
+                var process = await _systemProcessRepository.Read();
+                return process.PId;
+            }
+            catch (FileExistException)
+            {
+                throw new InvalidOperationException("File does not exist or has been deleted");
+            }
         }
 
         public async Task<string> GetProcessName()
         {
-            var process = await _systemProcessRepository.Read();
-            return process.Name;
+            try
+            {
+                var process = await _systemProcessRepository.Read();
+                return process.Name;
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("File does not exist or has been deleted");
+            }
         }
 
 
         public async Task<string> SetProcessAutomatically()
         {
-            var isExist =  _systemProcessRepository.IsExist;
+            var isExist = _systemProcessRepository.IsExist;
             if (!isExist)
             {
                 var process = FindMostLoadedProcess();
@@ -53,7 +68,7 @@ namespace ParkSoundManagementSystem.Services
 
         public async Task<int> SetProcess(string processName)
         {
-            WriteAllProcess();
+            WriteAllProcessInList();
             var process = _processes.FirstOrDefault(x => x.Name == processName);
             var pId = await _systemProcessRepository.Write(process);
             return pId;
@@ -62,11 +77,11 @@ namespace ParkSoundManagementSystem.Services
 
         private DesiredProcess FindMostLoadedProcess()
         {
-            WriteAllProcess();
+            WriteAllProcessInList();
             var currentProcess = _processes.Max(x => x);
             return currentProcess;
         }
-        private void WriteAllProcess()
+        private void WriteAllProcessInList()
         {
             Process[] process = Process.GetProcesses();
             foreach (Process p in process)
@@ -76,6 +91,6 @@ namespace ParkSoundManagementSystem.Services
             }
         }
 
-       
+
     }
 }
