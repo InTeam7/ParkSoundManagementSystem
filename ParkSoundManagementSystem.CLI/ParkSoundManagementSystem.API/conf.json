@@ -1,3 +1,4 @@
 {
-    "file": "config.txt"
+  "ProcessFile": "ProcessConfig.txt",
+  "TimeFile": "TimeConfig.txt"
 }

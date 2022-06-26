@@ -11,8 +11,8 @@ namespace ParkSoundManagementSystem.DataAccess
 {
     public class TimeRepository : ITimeRepository
     {
-        private readonly RepositoryArgs _args;
-        public TimeRepository(RepositoryArgs args)
+        private readonly TimeRepositoryArgs _args;
+        public TimeRepository(TimeRepositoryArgs args)
         {
             _args = args;
         }
@@ -40,7 +40,7 @@ namespace ParkSoundManagementSystem.DataAccess
             var text = string.Format("{0:T}", time);
             using (var sw = new StreamWriter(_args.FilePath, false))
             {
-                await sw.WriteLineAsync(text);
+                await sw.WriteAsync(text);
             }
             return time;
 

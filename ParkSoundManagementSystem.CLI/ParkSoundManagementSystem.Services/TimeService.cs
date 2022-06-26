@@ -30,9 +30,9 @@ namespace ParkSoundManagementSystem.Services
             }
         }
 
-        public Task<DateTime> SetDefultTime()
+        public async Task<DateTime> SetDefultTime()
         {
-            return _timerRepository.SetTime(_defaultTime);
+            return await _timerRepository.SetTime(_defaultTime);
         }
 
         public async Task<DateTime> SetTime(DateTime time)

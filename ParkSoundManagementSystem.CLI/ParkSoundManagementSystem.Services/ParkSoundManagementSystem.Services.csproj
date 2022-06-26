@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ParkSoundManagementSystem.Core\ParkSoundManagementSystem.Core.csproj" />
+    <ProjectReference Include="..\ParkSoundManagementSystem.DataAccess\ParkSoundManagementSystem.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

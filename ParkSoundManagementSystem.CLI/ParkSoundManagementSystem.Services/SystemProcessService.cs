@@ -14,11 +14,14 @@ namespace ParkSoundManagementSystem.Services
     public class SystemProcessService : ISystemProcessService
     {
         private readonly ISystemProcessRepository _systemProcessRepository;
+        private readonly IAudioControlService _audioControlService;
         private List<DesiredProcess> _processes;
-        public SystemProcessService(ISystemProcessRepository systemProcessRepository)
+        public SystemProcessService(ISystemProcessRepository systemProcessRepository, IAudioControlService audioControlService)
         {
             _systemProcessRepository = systemProcessRepository;
             _processes = new List<DesiredProcess>();
+            _audioControlService = audioControlService;
+
         }
 
         public async Task<int> GetProcessId()
@@ -60,10 +63,24 @@ namespace ParkSoundManagementSystem.Services
             }
             else
             {
-                var process = await _systemProcessRepository.Read();
-                return process.Name;
+                if (await _systemProcessRepository.IsContainsString())
+                {
+                    var process = await _systemProcessRepository.Read();
+                    var diseredProcess = FindPidByName(process.Name);
+                    var newProcc = await _systemProcessRepository.Write(diseredProcess);
+                    _audioControlService.SetApplicationMute(newProcc, false);
+                    return diseredProcess.Name;
+                }
+                else
+                {
+                    var process = FindMostLoadedProcess();
+                    var id = await _systemProcessRepository.Write(process);
+                    return process.Name;
+                }
             }
         }
+
+
 
 
         public async Task<int> SetProcess(string processName)
@@ -77,18 +94,31 @@ namespace ParkSoundManagementSystem.Services
 
         private DesiredProcess FindMostLoadedProcess()
         {
+            
             WriteAllProcessInList();
             var currentProcess = _processes.Max(x => x);
             return currentProcess;
         }
         private void WriteAllProcessInList()
         {
+            _processes.Clear();
             Process[] process = Process.GetProcesses();
             foreach (Process p in process)
             {
                 long memoryUse = (p.WorkingSet64 / 1024);
                 _processes.Add(new DesiredProcess(p.ProcessName, p.Id, memoryUse));
             }
+        }
+        private DesiredProcess FindPidByName(string name)
+        {
+            var process = _processes.Find(x => x.Name == name);
+            while(_processes.Find(x => x.Name == name) == null)
+            {
+                WriteAllProcessInList();
+            }
+            var desiredProcess = _processes.FirstOrDefault(x=>x.Name==name);
+            return desiredProcess;
+            
         }
 
 

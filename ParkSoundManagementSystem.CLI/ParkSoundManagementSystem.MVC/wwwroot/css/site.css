@@ -1,0 +1,33 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+body {
+    background-color: #191919;
+}
+.mainbutton{
+    border-radius: 10px;
+    border: 2px #D3D3D3 solid;
+    font-size: 20px;
+}
+#sound_on {
+    border-radius: 10px;
+    border: #737373 1px solid;
+}
+#sound_off {
+    border-radius: 10px;
+    border: #737373 1px solid;
+}
+.mainmenu {
+    border: 2px #D3D3D3 solid;
+    border-radius: 10px;
+}
+.ui.two.column.stackable.grid {
+    margin-top: 100px;
+}
+
+
+
+
+
+/* Provide sufficient contrast against white background */
+

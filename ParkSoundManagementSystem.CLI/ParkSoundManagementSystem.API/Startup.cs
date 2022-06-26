@@ -31,10 +31,15 @@ namespace ParkSoundManagementSystem.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<RepositoryArgs>(_ => new RepositoryArgs { FilePath = Configuration["file"] });
+            services.AddSingleton<ProcessRepositoryArgs>(_ => new ProcessRepositoryArgs { FilePath = Configuration["ProcessFile"] });
             services.AddScoped<ISystemProcessRepository,SystemProccessRepository>();
             services.AddScoped<ISystemProcessService,SystemProcessService>();
 
+            services.AddSingleton<TimeRepositoryArgs>(_ => new TimeRepositoryArgs { FilePath = Configuration["TimeFile"] });
+            services.AddScoped<ITimeRepository, TimeRepository>();
+            services.AddScoped<ITimeService, TimeService>();
+
+           // services.AddSignalR();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -52,6 +57,8 @@ namespace ParkSoundManagementSystem.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkSoundManagementSystem.API v1"));
             }
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -60,6 +67,7 @@ namespace ParkSoundManagementSystem.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //endpoints.MapHub<NotifyTimeHub>("/time");
             });
         }
     }

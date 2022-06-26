@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkSoundManagementSystem.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkSoundManagementSystem.DataAccess", "ParkSoundManagementSystem.DataAccess\ParkSoundManagementSystem.DataAccess.csproj", "{B1D96756-0338-43A0-BC9F-D0FA31246F06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkSoundManagementSystem.API", "ParkSoundManagementSystem.API\ParkSoundManagementSystem.API.csproj", "{35B21730-B21B-49D4-8FD9-F8E78EC2BFEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkSoundManagementSystem.MVC", "ParkSoundManagementSystem.MVC\ParkSoundManagementSystem.MVC.csproj", "{A8197501-EA7E-463F-8806-D71ADAAF9BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{B1D96756-0338-43A0-BC9F-D0FA31246F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1D96756-0338-43A0-BC9F-D0FA31246F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1D96756-0338-43A0-BC9F-D0FA31246F06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35B21730-B21B-49D4-8FD9-F8E78EC2BFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35B21730-B21B-49D4-8FD9-F8E78EC2BFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35B21730-B21B-49D4-8FD9-F8E78EC2BFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35B21730-B21B-49D4-8FD9-F8E78EC2BFEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8197501-EA7E-463F-8806-D71ADAAF9BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8197501-EA7E-463F-8806-D71ADAAF9BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8197501-EA7E-463F-8806-D71ADAAF9BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8197501-EA7E-463F-8806-D71ADAAF9BDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

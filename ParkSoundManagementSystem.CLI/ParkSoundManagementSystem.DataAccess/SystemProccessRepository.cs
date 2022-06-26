@@ -12,9 +12,9 @@ namespace ParkSoundManagementSystem.DataAccess
 {
     public class SystemProccessRepository : ISystemProcessRepository
     {
-        private readonly RepositoryArgs _args;
+        private readonly ProcessRepositoryArgs _args;
 
-        public SystemProccessRepository(RepositoryArgs args)
+        public SystemProccessRepository(ProcessRepositoryArgs args)
         {
             _args = args;
         }
@@ -34,7 +34,7 @@ namespace ParkSoundManagementSystem.DataAccess
         public async Task<DesiredProcess> Read()
         {
             var text = await OpenAndRead();
-            var _keyWords = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var _keyWords = text.Split('_', StringSplitOptions.RemoveEmptyEntries);
             var processName = _keyWords[0];
             if (int.TryParse(_keyWords[1], out int pId))
             {
@@ -47,10 +47,10 @@ namespace ParkSoundManagementSystem.DataAccess
 
         public async Task<int> Write(DesiredProcess process)
         {
-            string text = process.Name + " " + process.PId.ToString();
+            string text = process.Name + "_" + process.PId.ToString();
             using (StreamWriter writer = new StreamWriter(_args.FilePath, false))
             {
-                await writer.WriteLineAsync("");
+                await writer.WriteAsync(text);
             }
 
             return process.PId;
@@ -64,6 +64,7 @@ namespace ParkSoundManagementSystem.DataAccess
                 using (StreamReader sr = new StreamReader(_args.FilePath))
                 {
                     string text = await sr.ReadToEndAsync();
+                    return text;
                 }
             }
             throw new FileExistException("File does not exsist");
