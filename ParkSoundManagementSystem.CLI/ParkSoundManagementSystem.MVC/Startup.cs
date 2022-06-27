@@ -48,8 +48,10 @@ namespace ParkSoundManagementSystem.MVC
             services.AddSingleton<IRepeatCountService, RepeatCountService>();
 
             services.AddScoped<IAudioControlService, AudioControlService>();
+            services.AddSingleton<ITextToSpeechService, TextToSpeechService>();
+            services.AddScoped<IPlayAudioFileService, PlayAudioFileService>();
 
-       
+
             services.AddSignalR();
             services.AddControllersWithViews(x => x.SslPort = 5002);
         }

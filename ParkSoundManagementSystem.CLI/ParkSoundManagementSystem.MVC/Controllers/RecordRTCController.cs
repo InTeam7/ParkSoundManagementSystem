@@ -27,7 +27,9 @@ namespace ParkSoundManagementSystem.MVC.Controllers
                 var value = key.FirstOrDefault(x => x != "audio-filename");
                 string UniqueFileName = value;
                 string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
-                file.CopyTo(new FileStream(UploadPath, FileMode.Create));
+                var fs = new FileStream(UploadPath, FileMode.Create);
+                file.CopyTo(fs);
+                fs.Close();
             }
             return Json(HttpStatusCode.OK);
         }

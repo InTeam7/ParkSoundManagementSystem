@@ -103,7 +103,9 @@ record.onclick = function () {
     }, function (stream) {
 
         recordAudio = RecordRTC(stream, {
-            type: 'audio'
+            type: 'audio',
+            recorderType: StereoAudioRecorder,
+            desiredSampRate: 16000
         });
         recordAudio.startRecording();
         stop.disabled = false;
@@ -115,7 +117,7 @@ var fileName;
 stop.onclick = function () {
     record.disabled = false;
     stop.disabled = true;
-    fileName = (Math.round(Math.random() * 99999999) + 99999999) + '.wav';
+    fileName = (Math.round(Math.random() * 999999)) + '.wav';
     recordAudio.stopRecording(function () {
         PostBlob(recordAudio.getBlob());
     });

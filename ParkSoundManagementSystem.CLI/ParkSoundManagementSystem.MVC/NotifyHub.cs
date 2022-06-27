@@ -11,29 +11,40 @@ namespace ParkSoundManagementSystem.MVC
         private readonly IRepeatCountService _repeatCountService;
         private readonly IAudioControlService _audioControlService;
         private readonly ISystemProcessService _systemProcessService;
+        private readonly ITextToSpeechService _textToSpeechService;
+        private readonly IPlayAudioFileService _audioPlayService;
         public NotifyHub(ITimeService timeService,
             IRepeatCountService repeatCountService,
             IAudioControlService audioControlService,
-            ISystemProcessService systemProcessService)
+            ISystemProcessService systemProcessService,
+             ITextToSpeechService textToSpeechService,
+             IPlayAudioFileService audioPlayService)
         {
             _repeatCountService = repeatCountService;
             _timeService = timeService; 
             _audioControlService = audioControlService;
             _systemProcessService = systemProcessService;
+            _textToSpeechService = textToSpeechService;
+            _audioPlayService = audioPlayService;
         }
 
         public async Task SpeechText(string text)
         {
             await this.Clients.Others.SendAsync("Speech", text);
+            var pId = await _systemProcessService.GetProcessId();
+            _audioControlService.SetApplicationMute(pId, true);
+            _textToSpeechService.Speech(text, _repeatCountService.Count);
         }
         public async Task ChangeVoice(string voice)
         {
             await this.Clients.Others.SendAsync("SelectedVoice", voice);
+            _textToSpeechService.SelectVoice(voice);
         }
       
         public async Task PlayNotify(string message)
         {
             await this.Clients.All.SendAsync("PlayNotify", message);
+             _audioPlayService.PlayNotify(_repeatCountService.Count);
         }
        
         public async Task TurnOnSound(string message)
@@ -87,6 +98,7 @@ namespace ParkSoundManagementSystem.MVC
         public async Task PlayVoiceMessage(string voiceName)
         {
             await this.Clients.All.SendAsync("PlayVoiceMessage", voiceName);
+            _audioPlayService.PlayVoiceMessage(voiceName, _repeatCountService.Count);
         }
       
         public override async Task OnConnectedAsync()
