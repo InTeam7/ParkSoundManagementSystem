@@ -12,15 +12,15 @@
             <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
                 <button class="ui fluid basic inverted massive button" id="play_notify">Включить уведомление о закрытии</button>
             </div>
-            <div class="ui clearing inverted segment"style="border: #737373 1px solid;">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
                 <h2 class="ui  center aligned header">Количество повторов</h2>
                 <br>
                 <br>
                 <div class="ui inverted large teal progress" data-value="1" data-total="5" id="repeat_count">
                     <div class="bar"></div>
-                   
+
                 </div>
-                 <h3 class="ui center aligned header" id="count_number">1</h3>
+                <h3 class="ui center aligned header" id="count_number">1</h3>
                 <div class="ui three column  grid container">
                     <div class="column panel">
                         <button class="ui fluid big negative inverted basic button" id="decrement_count"><i class="icon minus"></i></button>
@@ -62,7 +62,7 @@
                             <input type="hidden" name="gender">
                             <i class="dropdown icon"></i>
                             <div class="default text">Диктор</div>
-                            <div class="menu" >
+                            <div class="menu">
                                 <div class="item" id="men_voice" data-value="1">Мужской голос</div>
                                 <div class="item" id="woman_voice" data-value="0">Женский голос</div>
                             </div>
@@ -91,11 +91,27 @@
                         </button>
                     </div>
                 </div>
-                
-
-
-
             </div>
         </div>
+    </div>
+    <div class="sixteen wide column mainmenu">
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <div class="ui  fluid selection dropdown inverted big labeled " style="text-align:center"id="select_computer" >
+                    <span class="text center aligned">Выберите локацию</span>
+                    <div class="menu"id="selector_computer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                
+                <div class="ui inverted  teal slider" id="slider"></div>
+                <h3 class="ui center aligned header" id="slider_count">0</h3>
+            </div>
+        </div>
+
     </div>
 </div>

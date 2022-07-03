@@ -1,9 +1,4 @@
 ﻿using ParkSoundManagementSystem.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
 using System.Speech.Synthesis;
 
@@ -14,7 +9,7 @@ namespace ParkSoundManagementSystem.Services
 {
     public class TextToSpeechService : ITextToSpeechService
     {
-        
+
         private readonly SpeechSynthesizer _synth;
         public TextToSpeechService()
         {

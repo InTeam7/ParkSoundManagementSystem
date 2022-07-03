@@ -2,10 +2,8 @@
 using ParkSoundManagementSystem.Core.Repositories;
 using ParkSoundManagementSystem.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
 
 namespace ParkSoundManagementSystem.Services
 {
@@ -13,9 +11,10 @@ namespace ParkSoundManagementSystem.Services
     {
         private readonly ITimeRepository _timerRepository;
         private readonly DateTime _defaultTime;
+
         public TimeService(ITimeRepository timeRepository)
         {
-            _timerRepository=timeRepository;
+            _timerRepository = timeRepository;
             _defaultTime = new DateTime(2000, 01, 01, 19, 45, 00);
         }
         public async Task<DateTime> GetTime()

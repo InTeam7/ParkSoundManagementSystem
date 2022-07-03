@@ -1,5 +1,3 @@
-using System;
-
 namespace ParkSoundManagementSystem.MVC.Models
 {
     public class ErrorViewModel

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ParkSoundManagementSystem.Core.Services;
+﻿using ParkSoundManagementSystem.Core.Services;
 using ParkSoundManagementSystem.Services.Helpers;
 
 namespace ParkSoundManagementSystem.Services
@@ -36,6 +31,16 @@ namespace ParkSoundManagementSystem.Services
         public void SetApplicationVolume(int pid, float level)
         {
             AudioManager.SetApplicationVolume(pid, level);
+        }
+        public void SetMasterVolume(int volume)
+        {
+            AudioManager.SetMasterVolume((float)volume);
+        }
+
+        public int GetMasterVolume()
+        {
+            var volume = AudioManager.GetMasterVolume();
+            return (int)volume;
         }
     }
 }

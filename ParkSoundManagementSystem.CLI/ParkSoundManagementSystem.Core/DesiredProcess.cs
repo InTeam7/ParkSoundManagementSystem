@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.Core
 {
-    public class DesiredProcess:IComparable<DesiredProcess>
+    public class DesiredProcess : IComparable<DesiredProcess>
     {
-        public DesiredProcess(string name, int pId,long memory)
+        public DesiredProcess(string name, int pId, long memory)
         {
             Name = name;
             PId = pId;
             Memory = memory;
         }
-        public DesiredProcess(string name,int pId)
+        public DesiredProcess(string name, int pId)
         {
             Name = name;
             PId = pId;

@@ -1,15 +1,9 @@
 ﻿
+using NAudio.Wave;
 using NetCoreAudio;
 using ParkSoundManagementSystem.Core.Services;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Threading;
-using NAudio.Wave;
 
 namespace ParkSoundManagementSystem.Services
 {
@@ -24,10 +18,10 @@ namespace ParkSoundManagementSystem.Services
         }
         public void PlayNotify(int count)
         {
-            
+
             for (int i = 0; i < count; i++)
             {
-                
+
                 using (var audioFile = new AudioFileReader(_fileName))
                 using (var outputDevice = new WaveOutEvent())
                 {
@@ -43,7 +37,7 @@ namespace ParkSoundManagementSystem.Services
 
         public void PlayVoiceMessage(string name, int count)
         {
-            string fileName = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles",name);
+            string fileName = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles", name);
             for (int i = 0; i < count; i++)
             {
                 using (var audioFile = new AudioFileReader(fileName))
@@ -57,7 +51,7 @@ namespace ParkSoundManagementSystem.Services
                     }
                 }
             }
-            
+
         }
     }
 }

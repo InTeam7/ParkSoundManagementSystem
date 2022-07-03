@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.Services
@@ -94,7 +93,7 @@ namespace ParkSoundManagementSystem.Services
 
         private DesiredProcess FindMostLoadedProcess()
         {
-            
+
             WriteAllProcessInList();
             var currentProcess = _processes.Max(x => x);
             return currentProcess;
@@ -112,13 +111,13 @@ namespace ParkSoundManagementSystem.Services
         private DesiredProcess FindPidByName(string name)
         {
             var process = _processes.Find(x => x.Name == name);
-            while(_processes.Find(x => x.Name == name) == null)
+            while (_processes.Find(x => x.Name == name) == null)
             {
                 WriteAllProcessInList();
             }
-            var desiredProcess = _processes.FirstOrDefault(x=>x.Name==name);
+            var desiredProcess = _processes.FirstOrDefault(x => x.Name == name);
             return desiredProcess;
-            
+
         }
 
 

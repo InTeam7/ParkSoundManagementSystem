@@ -1,11 +1,7 @@
 ﻿using ParkSoundManagementSystem.Core.Exceptions;
 using ParkSoundManagementSystem.Core.Repositories;
 using ParkSoundManagementSystem.Core.Services;
-using ParkSoundManagementSystem.DataAccess;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.Services
@@ -18,7 +14,7 @@ namespace ParkSoundManagementSystem.Services
         public RepeatCountService(IRepeatCountRepository repeatCountRepository)
         {
             _repeatCountRepository = repeatCountRepository;
-            
+
         }
 
         public async Task<int> GetRepeatCount()

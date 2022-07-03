@@ -17,8 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ParkSoundManagementSystem.Core\ParkSoundManagementSystem.Core.csproj" />
-    <ProjectReference Include="..\ParkSoundManagementSystem.DataAccess\ParkSoundManagementSystem.DataAccess.csproj" />
-    <ProjectReference Include="..\ParkSoundManagementSystem.Services\ParkSoundManagementSystem.Services.csproj" />
   </ItemGroup>
 
 </Project>

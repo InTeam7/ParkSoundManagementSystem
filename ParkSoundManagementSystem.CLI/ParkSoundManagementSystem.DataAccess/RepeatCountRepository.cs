@@ -2,10 +2,7 @@
 using ParkSoundManagementSystem.Core.Repositories;
 using ParkSoundManagementSystem.DataAccess.ArgsClasses;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.DataAccess
@@ -26,7 +23,7 @@ namespace ParkSoundManagementSystem.DataAccess
                 using (var sr = new StreamReader(_args.FilePath))
                 {
                     string text = await sr.ReadToEndAsync();
-                    if(int.TryParse(text,out int count))
+                    if (int.TryParse(text, out int count))
                     {
                         return count;
                     }

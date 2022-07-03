@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,17 +7,16 @@ using ParkSoundManagementSystem.Core.Repositories;
 using ParkSoundManagementSystem.Core.Services;
 using ParkSoundManagementSystem.DataAccess;
 using ParkSoundManagementSystem.DataAccess.ArgsClasses;
+using ParkSoundManagementSystem.MVC.Quartz;
 using ParkSoundManagementSystem.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Quartz;
 
 namespace ParkSoundManagementSystem.MVC
 {
     public class Startup
     {
         private static ISystemProcessService _systemProcessService;
+        private static IGarbageCleaningService _garbageCleaningService;
         public Startup(IConfiguration configuration)
         {
 
@@ -32,12 +29,10 @@ namespace ParkSoundManagementSystem.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             services.AddSingleton<ProcessRepositoryArgs>(_ => new ProcessRepositoryArgs { FilePath = Configuration["ProcessFile"] });
             services.AddScoped<ISystemProcessRepository, SystemProccessRepository>();
             services.AddScoped<ISystemProcessService, SystemProcessService>();
-
-
 
             services.AddSingleton<TimeRepositoryArgs>(_ => new TimeRepositoryArgs { FilePath = Configuration["TimeFile"] });
             services.AddScoped<ITimeRepository, TimeRepository>();
@@ -47,13 +42,31 @@ namespace ParkSoundManagementSystem.MVC
             services.AddSingleton<IRepeatCountRepository, RepeatCountRepository>();
             services.AddSingleton<IRepeatCountService, RepeatCountService>();
 
-            services.AddScoped<IAudioControlService, AudioControlService>();
+            services.AddSingleton<IAudioControlService, AudioControlService>();
             services.AddSingleton<ITextToSpeechService, TextToSpeechService>();
             services.AddScoped<IPlayAudioFileService, PlayAudioFileService>();
-
-
-            services.AddSignalR();
+            services.AddSingleton<IGarbageCleaningService, GarbageCleaningService>();
+            services.AddSingleton<IParkVolumeService, ParkVolumeService>();
             services.AddControllersWithViews(x => x.SslPort = 5002);
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+
+                var TimeJobKey = new JobKey("TimeJob");
+                q.AddJob<TimeJob>(opts => opts.WithIdentity(TimeJobKey));
+                q.AddTrigger(opts => opts
+                    .ForJob(TimeJobKey)
+                    .WithIdentity("TimeJob-trigger")
+                    .WithSimpleSchedule(x => x
+                        .WithIntervalInSeconds(1)
+                        .RepeatForever()));
+            });
+
+
+            services.AddQuartzHostedService(
+                    q => q.WaitForJobsToComplete = true);
+            services.AddSignalR();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +75,13 @@ namespace ParkSoundManagementSystem.MVC
             app.UseHttpsRedirection();
             app.Use(async (context, next) =>
             {
-                _systemProcessService=context.RequestServices.GetService<ISystemProcessService>();
+                _garbageCleaningService = context.RequestServices.GetService<IGarbageCleaningService>();
+                int count = _garbageCleaningService.GetCountFiles();
+                if (count > 50)
+                {
+                    _garbageCleaningService.DeleteFiles();
+                }
+                _systemProcessService = context.RequestServices.GetService<ISystemProcessService>();
                 var name = await _systemProcessService.SetProcessAutomatically();
                 await next.Invoke();
             });
@@ -77,7 +96,7 @@ namespace ParkSoundManagementSystem.MVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

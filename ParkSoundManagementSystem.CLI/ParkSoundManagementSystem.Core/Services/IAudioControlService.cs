@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ParkSoundManagementSystem.Core.Services
+﻿namespace ParkSoundManagementSystem.Core.Services
 {
     public interface IAudioControlService
     {
@@ -12,7 +6,10 @@ namespace ParkSoundManagementSystem.Core.Services
         bool GetApplicationMute(int pid);
         void SetApplicationVolume(int pid, float level);
         void SetApplicationMute(int pid, bool mute);
-        
+        void SetMasterVolume(int volume);
+        int GetMasterVolume();
+
+
 
     }
 }

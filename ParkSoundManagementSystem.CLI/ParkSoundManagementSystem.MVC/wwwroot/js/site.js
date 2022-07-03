@@ -13,15 +13,33 @@ $(document).ready(function () {
         }
 
     });
-
-
+    $('.ui.slider')
+        .slider({
+            min: 0,
+            max: 100,
+            start: 0,
+            step: 1,
+            smooth: true,
+            onMove: function (value) {
+                $('#slider_count').text(value);
+                hubConnection.invoke("SetVolume", value);
+            }
+        });
 })
 
+
 $('.ui.dropdown').dropdown();
+
 const hubConnection = new signalR.HubConnectionBuilder()
     .withUrl("/send")
     .build();
-//hubConnection.invoke("Send", "1");
+
+$('#select_computer').dropdown({
+    onChange: function (value, text, $choice) {
+        $('#slider').addClass('disabled');
+        hubConnection.invoke("CheckIsOnlineSelectedComputer", value);
+    }
+});
 
 $('body').on('click', '#delete', function () {
     $(this).closest('.message').remove();
@@ -68,6 +86,7 @@ $('#sound_on').click(function () {
 $('#sound_off').click(function () {
     hubConnection.invoke("TurnOffSound", "off");
 })
+
 
 function PostBlob(blob) {
     var formData = new FormData();
@@ -138,10 +157,20 @@ function xhr(url, data, callback) {
 
 var count = 1;
 hubConnection.on('SendCount', function (message) {
+    $('#slider').addClass('disabled');
     count = Number(message);
     $('#count_number').text(count);
     $('#repeat_count').progress('set progress',count);
     
+});
+hubConnection.on('StatusResponce', function (volume) {
+    $('.ui.slider').slider('set value', volume, fireChange = false);
+    $('#slider_count').text(volume);
+    $('#slider').removeClass('disabled');
+    setTimeout(function () {
+        $('#slider').addClass('disabled');
+    }, 60000);
+
 });
 hubConnection.on('SendText', function (message) {
     $('#textarea').val(message);
@@ -174,6 +203,11 @@ hubConnection.on('TurnOnSound', function (mess) {
 hubConnection.on('TurnOffSound', function (mess) {
     $('#sound_on').css('border', '#737373 1px solid')
     $('#sound_off').css('border', 'red 3px solid')
+});
+hubConnection.on('Computers', function (computers) {
+    for (var i = 0; i < computers.length; i++) {
+        $('#selector_computer').append('<div class="item" data-value="'+computers[i]+'">' + computers[i]+'</div>');   
+    }
 });
 
 

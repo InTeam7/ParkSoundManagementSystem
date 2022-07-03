@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.MVC.Controllers
 {
     public class RecordRTCController : Controller
     {
         // GET: RecordRTCController
+        private readonly IHubContext<NotifyHub> _hubContext;
+        public RecordRTCController(IHubContext<NotifyHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
         public ActionResult Index()
         {
             return View();
@@ -17,7 +22,7 @@ namespace ParkSoundManagementSystem.MVC.Controllers
 
         // ---/RecordRTC/PostRecordedAudioVideo
         [HttpPost]
-        public ActionResult PostRecordedAudioVideo()
+        public async Task<ActionResult> PostRecordedAudioVideo()
         {
             if (Request.Form.Files.Any())
             {
@@ -30,6 +35,7 @@ namespace ParkSoundManagementSystem.MVC.Controllers
                 var fs = new FileStream(UploadPath, FileMode.Create);
                 file.CopyTo(fs);
                 fs.Close();
+                await _hubContext.Clients.All.SendAsync("DownLoad", UniqueFileName);
             }
             return Json(HttpStatusCode.OK);
         }
