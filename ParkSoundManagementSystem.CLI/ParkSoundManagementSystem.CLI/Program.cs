@@ -38,7 +38,7 @@ namespace ParkSoundManagementSystem.CLI
             var _systemProcessService = serviceProvider.GetService<ISystemProcessService>();
             var name = await _systemProcessService.SetProcessAutomatically();
             var pId = await _systemProcessService.GetProcessId();
-            var _audioControlService = serviceProvider.GetService<AudioControlService>();
+            var _audioControlService = serviceProvider.GetService<IAudioControlService>();
             _audioControlService.SetApplicationMute(pId, false);
             var _garbageCleaningService = serviceProvider.GetService<IGarbageCleaningService>();
             int count = _garbageCleaningService.GetCountFiles();
@@ -62,7 +62,7 @@ namespace ParkSoundManagementSystem.CLI
             }
             while (true)
             {
-
+                Console.ReadLine();
             }
         }
     }

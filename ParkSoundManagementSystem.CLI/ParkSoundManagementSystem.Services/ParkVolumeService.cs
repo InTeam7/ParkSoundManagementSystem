@@ -28,7 +28,7 @@ namespace ParkSoundManagementSystem.Services
                 ["Вовка кубики"] = IPAddress.Parse("192.168.1.31"),
                 ["Вовка печь"] = IPAddress.Parse("192.168.1.32"),
                 ["ТТП"] = IPAddress.Parse("192.168.1.29"),
-                ["Петя и волк"] = IPAddress.Parse("192.168.0.164"),//192.168.1.51
+                ["Петя и волк"] = IPAddress.Parse("192.168.1.51"),//192.168.1.51
                 ["Карлосон"] = IPAddress.Parse("192.168.1.52"),
                 ["Краски"] = IPAddress.Parse("192.168.1.38"),
                 ["Фото шар"] = IPAddress.Parse("192.168.1.28"),

@@ -24,7 +24,7 @@ namespace ParkSoundManagementSystem.CLI
         {
             _collection = collection;
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl("https://192.168.0.164:5002/send",
+                .WithUrl("https://192.168.0.194:8080/send",
                 options =>
                 {
                     options.HttpMessageHandlerFactory = (message) =>
@@ -57,10 +57,6 @@ namespace ParkSoundManagementSystem.CLI
             {
                 var count = await _repeatCountService.SetRepeatCount(z);
             });
-            _hubConnection.On<DateTime>("SendTime", z =>
-            {
-                _timeService.SetTime(z);
-            });
             _hubConnection.On<string>("Speech", async z =>
             {
                 var pId = await _systemProcessService.GetProcessId();
@@ -73,6 +69,13 @@ namespace ParkSoundManagementSystem.CLI
                 _textToSpeechService.SelectVoice(z);
             });
             _hubConnection.On<string>("PlayNotify", async z =>
+            {
+                var pId = await _systemProcessService.GetProcessId();
+                _audioControlService.SetApplicationMute(pId, true);
+                _audioPlayService.PlayNotify(_repeatCountService.Count);
+                _audioControlService.SetApplicationMute(pId, false);
+            });
+            _hubConnection.On<string>("PlayNotifyTimer", async z =>
             {
                 var pId = await _systemProcessService.GetProcessId();
                 _audioControlService.SetApplicationMute(pId, true);
@@ -104,7 +107,7 @@ namespace ParkSoundManagementSystem.CLI
             _hubConnection.On<string>("DownLoad", z =>
             {
                 string downloadFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles", z);
-                string fileAdress = Path.Combine("ftp://192.168.0.194:21/UploadedFiles/", z);
+                string fileAdress = Path.Combine("ftp://192.168.0.1:51/UploadedFiles/", z);
                 WebClient client = new WebClient();
                 client.DownloadFile(
                     fileAdress, downloadFile);

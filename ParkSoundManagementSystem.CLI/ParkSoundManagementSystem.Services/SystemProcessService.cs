@@ -67,7 +67,6 @@ namespace ParkSoundManagementSystem.Services
                     var process = await _systemProcessRepository.Read();
                     var diseredProcess = FindPidByName(process.Name);
                     var newProcc = await _systemProcessRepository.Write(diseredProcess);
-                    _audioControlService.SetApplicationMute(newProcc, false);
                     return diseredProcess.Name;
                 }
                 else
@@ -78,9 +77,6 @@ namespace ParkSoundManagementSystem.Services
                 }
             }
         }
-
-
-
 
         public async Task<int> SetProcess(string processName)
         {

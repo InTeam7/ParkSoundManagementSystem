@@ -62,11 +62,16 @@ namespace ParkSoundManagementSystem.MVC
                         .RepeatForever()));
             });
 
-
+            services.AddCors();
             services.AddQuartzHostedService(
                     q => q.WaitForJobsToComplete = true);
             services.AddSignalR();
-
+            var sp = services.BuildServiceProvider();
+            var _systemProcessService = sp.GetService<ISystemProcessService>();
+            var _audioControlService = sp.GetService<IAudioControlService>();
+            var name =  _systemProcessService.SetProcessAutomatically().Result;
+            var pId =  _systemProcessService.GetProcessId().Result;
+            _audioControlService.SetApplicationMute(pId, false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +106,7 @@ namespace ParkSoundManagementSystem.MVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCors(options => options.AllowAnyOrigin());
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
