@@ -33,7 +33,7 @@ namespace ParkSoundManagementSystem.MVC.Controllers
                 string UniqueFileName = value;
                 string UploadPath = Path.Combine(UploadFolder, UniqueFileName);
                 var fs = new FileStream(UploadPath, FileMode.Create);
-                file.CopyTo(fs);
+                await file.CopyToAsync(fs);
                 fs.Close();
                 await _hubContext.Clients.All.SendAsync("DownLoad", UniqueFileName);
             }

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.CLI
@@ -24,7 +25,7 @@ namespace ParkSoundManagementSystem.CLI
         {
             _collection = collection;
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl("https://192.168.0.194:8080/send",
+                .WithUrl("https://192.168.1.51:8080/send",
                 options =>
                 {
                     options.HttpMessageHandlerFactory = (message) =>
@@ -106,8 +107,11 @@ namespace ParkSoundManagementSystem.CLI
             });
             _hubConnection.On<string>("DownLoad", z =>
             {
+                Console.WriteLine(z);
+               
                 string downloadFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles", z);
-                string fileAdress = Path.Combine("ftp://192.168.0.1:51/UploadedFiles/", z);
+                string fileAdress = Path.Combine("ftp://192.168.1.51/UploadedFiles/", z);
+                var uri = new Uri(fileAdress);
                 WebClient client = new WebClient();
                 client.DownloadFile(
                     fileAdress, downloadFile);
