@@ -1,4 +1,4 @@
-![](https://github.com/InTeam7/ParkSoundManagementSystem/blob/Dev/gif.gif| width=100)
+![](https://github.com/InTeam7/ParkSoundManagementSystem/blob/Dev/gif.gif)
 Система управления парком компьютеров, главной целью которой является оповещение гостей 
 
 Доступ к системе имеется только у менеджеров парка 
