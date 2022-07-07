@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="ui two massive inverted  buttons">
+    <button class="ui inverted mainbutton  basic button" id="sound_on"><i class="volume green up icon"></i>Включить звук</button>
+    <button class="ui inverted mainbutton  basic button" id="sound_off"><i class="volume  red off icon"></i>Выключить звук</button>
+</div>
+
+<div class="ui two column stackable grid container">
+    <div class="column panel mainmenu">
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <button class="ui fluid basic inverted massive button" id="play_notify">Включить уведомление о закрытии</button>
+            </div>
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <h2 class="ui  center aligned header">Количество повторов</h2>
+                <br>
+                <br>
+                <div class="ui inverted large teal progress" data-value="1" data-total="5" id="repeat_count">
+                    <div class="bar"></div>
+
+                </div>
+                <h3 class="ui center aligned header" id="count_number">1</h3>
+                <div class="ui three column  grid container">
+                    <div class="column panel">
+                        <button class="ui fluid big negative inverted basic button" id="decrement_count"><i class="icon minus"></i></button>
+                    </div>
+                    <div class="column panel">
+                        <div class="cont_text">
+                        </div>
+                    </div>
+                    <div class="column panel">
+                        <button class="ui inverted big positive fluid basic button" id="increment_count"><i class="icon plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <h2 class="ui aligned center  header">Выберите время</h2>
+                <div class="ui fluid calendar" id="calendar">
+                    <div class="ui input fluid inverted big left icon">
+                        <i class="time icon"></i>
+                        <input type="text" placeholder="Time" id="input_calendar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="column panel mainmenu">
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <h2 class="ui center aligned header">Введите уведомление</h2>
+                <div class="ui form">
+                    <div class="field">
+                        <textarea id="textarea"></textarea>
+                    </div>
+                </div>
+                <div class="ui inverted divider"></div>
+                <div class="ui two column  grid container">
+                    <div class="column panel">
+                        <div class="ui fluid selection dropdown" id="select_voice">
+                            <input type="hidden" name="gender">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Диктор</div>
+                            <div class="menu">
+                                <div class="item" id="men_voice" data-value="1">Мужской голос</div>
+                                <div class="item" id="woman_voice" data-value="0">Женский голос</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column panel">
+                        <button class="ui large fluid basic inverted button" id="text_speech">Озвучить</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;" id="voice">
+                <h2 class="ui center aligned header">Записать голосовое уведомление</h2>
+                <div class="ui three column  grid container">
+                    <div class="column panel">
+                        <button class="circular fluid inverted red huge ui icon button" id="stop">
+                            <i class="icon white microphone slash"></i>
+                        </button>
+                    </div>
+                    <div class="column panel">
+                    </div>
+                    <div class="column panel">
+                        <button class="circular fluid inverted green huge ui icon button" id="record">
+                            <i class="icon white microphone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sixteen wide column mainmenu">
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                <div class="ui  fluid selection dropdown inverted big labeled " style="text-align:center"id="select_computer" >
+                    <span class="text center aligned">Выберите локацию</span>
+                    <div class="menu"id="selector_computer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cont_text">
+            <div class="ui clearing inverted segment" style="border: #737373 1px solid;">
+                
+                <div class="ui inverted  teal slider" id="slider"></div>
+                <h3 class="ui center aligned header" id="slider_count">0</h3>
+            </div>
+        </div>
+
+    </div>
+</div>
