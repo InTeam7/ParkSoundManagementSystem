@@ -1,0 +1,6 @@
+{
+  "ProcessFile": "ProcessConfig.txt",
+  "TimeFile": "TimeConfig.txt",
+  "CountFile": "CountConfig.txt"
+}
+

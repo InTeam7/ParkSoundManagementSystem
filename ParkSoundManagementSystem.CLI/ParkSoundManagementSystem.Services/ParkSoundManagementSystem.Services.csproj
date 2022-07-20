@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+    <PackageReference Include="NAudio" Version="2.1.0" />   
+	 <PackageReference Include="NetCoreAudio" Version="1.6.3" />   
+	 <PackageReference Include="Quartz" Version="3.4.0" />   
+	 <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />   
+	 <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
+    <PackageReference Include="System.Speech" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ParkSoundManagementSystem.Core\ParkSoundManagementSystem.Core.csproj" />
+    <ProjectReference Include="..\ParkSoundManagementSystem.DataAccess\ParkSoundManagementSystem.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
