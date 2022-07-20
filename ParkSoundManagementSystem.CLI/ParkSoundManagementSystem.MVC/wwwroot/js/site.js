@@ -87,6 +87,23 @@ $('#sound_off').click(function () {
     hubConnection.invoke("TurnOffSound", "off");
 })
 
+$('#turn-on').click(function () {
+    hubConnection.invoke("StateControl", "on");
+})
+$('#turn-off').click(function () {
+    hubConnection.invoke("StateControl", "off");
+})
+$('#reboot').click(function () {
+    hubConnection.invoke("StateControl", "reboot");
+})
+
+$('#turn-on-all').click(function () {
+    hubConnection.invoke("StateControlAll", "on");
+})
+$('#turn-off-all').click(function () {
+    hubConnection.invoke("StateControlAll", "off");
+})
+
 
 function PostBlob(blob) {
     var formData = new FormData();
@@ -162,6 +179,10 @@ hubConnection.on('SendCount', function (message) {
     $('#count_number').text(count);
     $('#repeat_count').progress('set progress',count);
     
+});
+
+hubConnection.on('IpSelectedComputer', function (ip) {
+    $('#ip').text(ip);
 });
 hubConnection.on('StatusResponce', function (volume) {
     $('.ui.slider').slider('set value', volume, fireChange = false);

@@ -10,7 +10,7 @@ namespace ParkSoundManagementSystem.Services
     public class ParkVolumeService : IParkVolumeService
     {
         private readonly IDictionary<string, IPAddress> _computers;
-        private IPAddress _currentComputer;
+        public IPAddress CurrentComputer { get; set; }
         private readonly IAudioControlService _audioControlService;
 
         public ParkVolumeService(IAudioControlService audioControlService)
@@ -37,6 +37,13 @@ namespace ParkSoundManagementSystem.Services
                 ["Шурале"] = IPAddress.Parse("192.168.1.37"),
                 ["Голограмма Леша"] = IPAddress.Parse("192.168.1.23"),
                 ["Большой телевизор"] = IPAddress.Parse("192.168.1.26"),
+                ["Таксофон"] = IPAddress.Parse("192.168.1.25"),
+                ["Фото герои 2экр."] = IPAddress.Parse("192.168.1.40"),
+                ["Фото герои 3экр."] = IPAddress.Parse("192.168.1.41"),
+                ["Голограмма телевизор"] = IPAddress.Parse("192.168.1.24"),
+                ["Краски трекер"] = IPAddress.Parse("192.168.1.39"),
+                ["Колодец"] = IPAddress.Parse("192.168.1.36"),
+                ["Цветок"] = IPAddress.Parse("192.168.1.35"),
             };
             _audioControlService = audioControlService;
         }
@@ -44,11 +51,11 @@ namespace ParkSoundManagementSystem.Services
 
         public string CreateMessage(int volume)
         {
-            if (_currentComputer.ToString() == GetMyIpAdress().ToString())
+            if (CurrentComputer.ToString() == GetMyIpAdress().ToString())
             {
                 _audioControlService.SetMasterVolume(volume);
             }
-            return _currentComputer.ToString() + "_" + volume;
+            return CurrentComputer.ToString() + "_" + volume;
         }
 
         public List<string> GetComputers()
@@ -71,13 +78,14 @@ namespace ParkSoundManagementSystem.Services
 
         public IPAddress SetComputer(string name)
         {
-            if (_computers.TryGetValue(name, out _currentComputer))
+            if (_computers.TryGetValue(name, out IPAddress _currentComputer))
             {
-                return _currentComputer;
+                CurrentComputer = _currentComputer;
+                return CurrentComputer;
             }
             throw new InvalidOperationException("Computer with this name does not exist");
-
         }
+
 
     }
 }

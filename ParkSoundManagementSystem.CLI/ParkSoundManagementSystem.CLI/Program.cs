@@ -5,8 +5,6 @@ using ParkSoundManagementSystem.DataAccess;
 using ParkSoundManagementSystem.DataAccess.ArgsClasses;
 using ParkSoundManagementSystem.Services;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.CLI
@@ -34,9 +32,10 @@ namespace ParkSoundManagementSystem.CLI
            .AddSingleton<IPlayAudioFileService, PlayAudioFileService>()
            .AddSingleton<IGarbageCleaningService, GarbageCleaningService>()
            .AddSingleton<IParkVolumeService, ParkVolumeService>()
+           .AddSingleton<IComputersControlService, ComputerControlService>()
 
            .BuildServiceProvider();
-            
+
             var _systemProcessService = serviceProvider.GetService<ISystemProcessService>();
             var name = await _systemProcessService.SetProcessAutomatically();
             var pId = await _systemProcessService.GetProcessId();
