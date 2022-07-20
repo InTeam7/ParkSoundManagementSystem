@@ -47,6 +47,8 @@ namespace ParkSoundManagementSystem.MVC
             services.AddScoped<IPlayAudioFileService, PlayAudioFileService>();
             services.AddSingleton<IGarbageCleaningService, GarbageCleaningService>();
             services.AddSingleton<IParkVolumeService, ParkVolumeService>();
+            services.AddSingleton<IComputersControlService, ComputerControlService>();
+
             services.AddControllersWithViews(x => x.SslPort = 5002);
             services.AddQuartz(q =>
             {
@@ -69,8 +71,8 @@ namespace ParkSoundManagementSystem.MVC
             var sp = services.BuildServiceProvider();
             var _systemProcessService = sp.GetService<ISystemProcessService>();
             var _audioControlService = sp.GetService<IAudioControlService>();
-            var name =  _systemProcessService.SetProcessAutomatically().Result;
-            var pId =  _systemProcessService.GetProcessId().Result;
+            var name = _systemProcessService.SetProcessAutomatically().Result;
+            var pId = _systemProcessService.GetProcessId().Result;
             _audioControlService.SetApplicationMute(pId, false);
         }
 

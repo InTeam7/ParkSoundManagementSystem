@@ -14,6 +14,7 @@ namespace ParkSoundManagementSystem.MVC
         private readonly ITextToSpeechService _textToSpeechService;
         private readonly IPlayAudioFileService _audioPlayService;
         private readonly IParkVolumeService _parkVolumeService;
+        private readonly IComputersControlService _computersControlService;
 
         public NotifyHub(ITimeService timeService,
             IRepeatCountService repeatCountService,
@@ -21,7 +22,9 @@ namespace ParkSoundManagementSystem.MVC
             ISystemProcessService systemProcessService,
             ITextToSpeechService textToSpeechService,
             IPlayAudioFileService audioPlayService,
-            IParkVolumeService parkVolumeService)
+            IParkVolumeService parkVolumeService,
+            IComputersControlService computersControlService
+            )
         {
             _repeatCountService = repeatCountService;
             _timeService = timeService;
@@ -30,6 +33,7 @@ namespace ParkSoundManagementSystem.MVC
             _textToSpeechService = textToSpeechService;
             _audioPlayService = audioPlayService;
             _parkVolumeService = parkVolumeService;
+            _computersControlService = computersControlService;
         }
 
         public async Task SpeechText(string text)
@@ -117,6 +121,7 @@ namespace ParkSoundManagementSystem.MVC
             }
             else
             {
+                await this.Clients.All.SendAsync("IpSelectedComputer", ipAdress.ToString());
                 await this.Clients.All.SendAsync("CheckIsOnlineSelectedComputer", computerName);
             }
         }
@@ -129,6 +134,40 @@ namespace ParkSoundManagementSystem.MVC
         public async Task AcceptOnlineStatusResponce(int volume)
         {
             await this.Clients.All.SendAsync("StatusResponce", volume);
+        }
+        public async Task StateControl(string state)
+        {
+            var currentIp = _parkVolumeService.CurrentComputer.ToString();
+            switch (state)
+            {
+                case "on":
+                    await _computersControlService.WakeOnLan(currentIp);
+                    break;
+                case "off":
+                    _computersControlService.ShutDown(currentIp);
+                    await this.Clients.All.SendAsync("StateControl", "off", currentIp);
+                    break;
+                case "reboot":
+                    _computersControlService.Reboot(currentIp);
+                    await this.Clients.All.SendAsync("StateControl", "reboot", currentIp);
+                    break;
+            }
+        }
+        public async Task StateControlAll(string state)
+        {
+            switch (state)
+            {
+                case "on":
+                    await _computersControlService.WakeOnLanAll();
+                    break;
+                case "off":
+                    var computers = _computersControlService.ShutDownAll();
+                    foreach (var computer in computers)
+                    {
+                        await this.Clients.All.SendAsync("StateControl", "off", computer);
+                    }
+                    break;
+            }
         }
 
         public override async Task OnConnectedAsync()

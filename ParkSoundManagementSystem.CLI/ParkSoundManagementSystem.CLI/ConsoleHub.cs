@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.CLI
@@ -21,6 +20,7 @@ namespace ParkSoundManagementSystem.CLI
         private readonly ITextToSpeechService _textToSpeechService;
         private readonly IPlayAudioFileService _audioPlayService;
         private readonly IParkVolumeService _parkVolumeService;
+        private readonly IComputersControlService _computersControlService;
         public ConsoleHub(ServiceProvider collection)
         {
             _collection = collection;
@@ -50,6 +50,7 @@ namespace ParkSoundManagementSystem.CLI
             _textToSpeechService = _collection.GetService<ITextToSpeechService>();
             _audioPlayService = _collection.GetService<IPlayAudioFileService>();
             _parkVolumeService = _collection.GetService<IParkVolumeService>();
+            _computersControlService = _collection.GetService<IComputersControlService>();
         }
 
         public Task RecieveMessages()
@@ -108,9 +109,9 @@ namespace ParkSoundManagementSystem.CLI
             _hubConnection.On<string>("DownLoad", z =>
             {
                 Console.WriteLine(z);
-               
+
                 string downloadFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UploadedFiles", z);
-                string fileAdress = Path.Combine("ftp://192.168.1.51/UploadedFiles/", z);
+                string fileAdress = Path.Combine("ftp://192.168.1.51/", z);
                 var uri = new Uri(fileAdress);
                 WebClient client = new WebClient();
                 client.DownloadFile(
@@ -130,6 +131,19 @@ namespace ParkSoundManagementSystem.CLI
                  {
                      await _hubConnection.SendAsync("AcceptOnlineStatusResponce", _audioControlService.GetMasterVolume());
                  }
+             });
+            _hubConnection.On<string, string>("StateControl", (state, ip) =>
+             {
+
+                 if (state == "off")
+                 {
+                     _computersControlService.ShutDown(ip);
+                 }
+                 else if (state == "reboot")
+                 {
+                     _computersControlService.Reboot(ip);
+                 }
+
              });
             _hubConnection.On<string>("SetVolumeComputer", computerName =>
             {
