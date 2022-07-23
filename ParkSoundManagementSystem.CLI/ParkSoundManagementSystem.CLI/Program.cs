@@ -43,6 +43,8 @@ namespace ParkSoundManagementSystem.CLI
             _audioControlService.SetApplicationMute(pId, false);
             var _garbageCleaningService = serviceProvider.GetService<IGarbageCleaningService>();
             int count = _garbageCleaningService.GetCountFiles();
+            Console.WriteLine("connectt");
+            
             if (count > 50)
             {
                 _garbageCleaningService.DeleteFiles();

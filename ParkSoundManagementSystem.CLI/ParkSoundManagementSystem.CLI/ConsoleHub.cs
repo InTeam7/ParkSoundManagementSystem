@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ParkSoundManagementSystem.CLI
@@ -51,6 +52,7 @@ namespace ParkSoundManagementSystem.CLI
             _audioPlayService = _collection.GetService<IPlayAudioFileService>();
             _parkVolumeService = _collection.GetService<IParkVolumeService>();
             _computersControlService = _collection.GetService<IComputersControlService>();
+            Console.WriteLine(_parkVolumeService.GetMyIpAdress());
         }
 
         public Task RecieveMessages()
@@ -137,7 +139,11 @@ namespace ParkSoundManagementSystem.CLI
 
                  if (state == "off")
                  {
+                     Console.WriteLine(ip);
+                     Thread.Sleep(100000);
+                     Console.WriteLine("connectt");
                      _computersControlService.ShutDown(ip);
+                     
                  }
                  else if (state == "reboot")
                  {
