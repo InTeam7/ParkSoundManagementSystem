@@ -120,7 +120,7 @@ namespace ParkSoundManagementSystem.Services
 
             foreach (var projector in projectors)
             {
-                var proj = new PJLinkHelper(projectors[0]);
+                var proj = new PJLinkHelper(projector);
                 if (TurnOn)
                     proj.turnOn();
                 else
