@@ -139,9 +139,6 @@ namespace ParkSoundManagementSystem.CLI
 
                  if (state == "off")
                  {
-                     Console.WriteLine(ip);
-                     Thread.Sleep(100000);
-                     Console.WriteLine("connectt");
                      _computersControlService.ShutDown(ip);
                      
                  }
