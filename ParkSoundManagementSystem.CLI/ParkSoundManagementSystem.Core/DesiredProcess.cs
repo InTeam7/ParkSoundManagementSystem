@@ -2,6 +2,9 @@
 
 namespace ParkSoundManagementSystem.Core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DesiredProcess : IComparable<DesiredProcess>
     {
         public DesiredProcess(string name, int pId, long memory)
